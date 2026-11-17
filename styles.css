@@ -555,3 +555,108 @@ a.payment-chip:hover .payment-detail { color: var(--sand); }
 .review-card .review-meta { margin-top: 10px; font-family: var(--font-mono); font-size: 0.68rem; color: var(--sand-dim); text-transform: uppercase; letter-spacing: 0.05em; }
 .review-empty { grid-column: 1 / -1; padding: 30px 24px; text-align: center; color: var(--sand-dim); font-family: var(--font-mono); font-size: 0.85rem; }
 @media (max-width: 860px) { .review-list { grid-template-columns: 1fr; } .review-card { border-right: none; } }
+
+
+/* ============================================================
+   GameNest 3D layer — preserves the original counter design
+   while adding tactile depth and responsive perspective.
+   ============================================================ */
+.ticket-hero,
+.ticket-stub,
+.deal-card,
+.payment-chip,
+.review-card {
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+}
+.ticket-hero {
+  perspective: 1400px;
+  transform: perspective(1400px) rotateX(1deg) rotateY(-1deg);
+  transition: transform .55s cubic-bezier(.2,.75,.2,1), box-shadow .55s ease;
+  box-shadow: 0 28px 70px rgba(0,0,0,.42), 0 2px 0 rgba(255,255,255,.08) inset;
+}
+.ticket-hero-top,
+.ticket-hero-body,
+.ticket-hero-stub {
+  transform: translateZ(18px);
+}
+.ticket-hero-visual img,
+.stub-visual img {
+  transform: translateZ(34px) rotateY(-7deg) rotateX(3deg);
+  transform-origin: center;
+  filter: drop-shadow(0 24px 22px rgba(0,0,0,.55));
+  transition: transform .55s cubic-bezier(.2,.75,.2,1), filter .55s ease;
+}
+.ticket-stub {
+  position: relative;
+  perspective: 1000px;
+  transform: perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0);
+  transition: transform .45s cubic-bezier(.2,.75,.2,1), box-shadow .45s ease, border-color .3s ease;
+  box-shadow: 0 12px 28px rgba(0,0,0,.28);
+}
+.ticket-stub::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  background: linear-gradient(125deg, transparent 20%, rgba(255,255,255,.12) 46%, transparent 68%);
+  transform: translateZ(48px);
+  transition: opacity .35s ease;
+}
+.stub-row,
+.stub-visual,
+.stub-price,
+.ticket-stub h3,
+.ticket-stub .stub-unit,
+.ticket-stub .product-btn {
+  transform: translateZ(20px);
+}
+.stub-visual { perspective: 900px; }
+.deal-card,
+.payment-chip,
+.review-card {
+  transition: transform .35s cubic-bezier(.2,.75,.2,1), box-shadow .35s ease, border-color .35s ease;
+  box-shadow: 0 10px 24px rgba(0,0,0,.18);
+}
+.deal-card { transform: perspective(900px) rotateX(0deg) translateZ(0); }
+.payment-chip { transform: perspective(900px) translateZ(0); }
+.review-card { transform: perspective(900px) translateZ(0); }
+
+@media (hover: hover) and (pointer: fine) {
+  .ticket-hero:hover {
+    transform: perspective(1400px) rotateX(0deg) rotateY(0deg) translateY(-5px);
+    box-shadow: 0 38px 90px rgba(0,0,0,.58), 0 2px 0 rgba(255,255,255,.12) inset;
+  }
+  .ticket-hero:hover .ticket-hero-visual img {
+    transform: translateZ(62px) rotateY(-12deg) rotateX(6deg) scale(1.035);
+    filter: drop-shadow(0 34px 28px rgba(0,0,0,.68));
+  }
+  .ticket-stub:hover {
+    transform: perspective(1000px) rotateX(3deg) rotateY(-3deg) translateY(-9px) translateZ(12px);
+    box-shadow: 0 30px 55px rgba(0,0,0,.5), 0 0 0 1px rgba(255,255,255,.22);
+    border-color: rgba(255,255,255,.42);
+  }
+  .ticket-stub:hover::after { opacity: 1; }
+  .ticket-stub:hover .stub-visual img {
+    transform: translateZ(58px) rotateY(-13deg) rotateX(7deg) scale(1.07);
+    filter: drop-shadow(0 34px 26px rgba(0,0,0,.7));
+  }
+  .deal-card:hover,
+  .payment-chip:hover,
+  .review-card:hover {
+    transform: perspective(900px) translateY(-6px) translateZ(12px) rotateX(1.5deg);
+    box-shadow: 0 24px 42px rgba(0,0,0,.38);
+    border-color: rgba(255,255,255,.38);
+  }
+}
+@media (max-width: 860px) {
+  .ticket-hero { transform: none; }
+  .ticket-hero-visual img,
+  .stub-visual img { transform: none; }
+  .ticket-stub { transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ticket-hero, .ticket-stub, .deal-card, .payment-chip, .review-card,
+  .ticket-hero-visual img, .stub-visual img { transition: none !important; }
+}
